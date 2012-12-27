@@ -427,6 +427,19 @@ describe Commander do
       }.should raise_error(SystemExit, /invalid command. Use --help for more information/)
     end
 
+    it "should allow arguments to an implied default command" do
+      received_args = []
+      new_command_runner 'somefile.txt' do
+        command :foo do |c|
+          c.when_called do |args, _|
+            received_args = args
+          end
+        end
+        default_command :foo
+      end.run!
+      received_args.should eq(['somefile.txt'])
+    end
+
     it "should not prevent other commands from being called" do
       new_command_runner 'foo', 'bar', '--trace' do
         default_command :test
