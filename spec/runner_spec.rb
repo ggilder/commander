@@ -420,6 +420,7 @@ describe Commander do
     end
 
     it "should raise error when a command is explicitly passed that does not exist" do
+      pending("JRuby's Kernel.abort implementation is not testable") if Commander::Platform::jruby?
       lambda {
         new_command_runner 'foo' do
           default_command :test
